@@ -40,14 +40,9 @@ export const kiteCallback = async (req, res) => {
         const response = await kite.generateSession(request_token, process.env.ZERODHA_API_SECRET);
         const Kiteaccess_token = response.access_token;
         kite.setAccessToken(Kiteaccess_token);
-
-        try {
-            
-            const profile = await kite.getProfile();
-            res.json(profile);
-        } catch (err) {
-            res.send(err);
-        }
+        console.log("Kite Access Token:", Kiteaccess_token);
+         res.status(200).json({ mes: "Kite accessed succesfully" });
+        
     } catch (error) {
         res.status(400).json({ 
             mes: "Error in kite callback",
@@ -55,3 +50,60 @@ export const kiteCallback = async (req, res) => {
     }
 
 };
+
+
+
+
+
+export async function getProfile(req, res) {
+  try {
+    const profile = await kite.getProfile();
+    console.log(`someone accessed profile: ${profile}`);  
+    res.status(200).json(profile);
+  } catch (err) {
+    res.status(400).json({ mes: err.message } );
+  }
+}
+
+
+
+export async function getHoldings(req, res) {
+  try {
+    const holdings = await kite.getHoldings();
+     res.status(200).json(holdings);
+  } catch (err) {
+    res.status(400).json({ mes: err.message } );
+  }
+}
+
+
+export async function getPositions(req, res) {
+  try {
+    const postion = await kite.getPositions();
+     res.status(200).json(postion);
+  } catch (err) {
+    res.status(400).json({ mes: err.message } );
+  }
+}
+
+
+export async function getfunds(req, res) {
+  try {
+    const equity = await kite.getMargins("equity");
+     res.status(200).json(equity);
+  } catch (err) {
+    res.status(400).json({ mes: err.message } );
+  }
+}
+
+
+export async function zerout(req, res) {
+
+  try {
+    const response = await kite.invalidateAccessToken(access_tokenopt);
+    res.json(response);
+
+  } catch (err) {
+    res.send(err);
+  }
+}
