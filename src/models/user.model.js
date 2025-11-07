@@ -1,4 +1,9 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt"
+
+
+
+
 
 const userSchema = new mongoose.Schema(
     {
@@ -9,22 +14,40 @@ const userSchema = new mongoose.Schema(
         zerodhausername: {
             type: String,
             required: true,
+            unique:true
         },
         email: {
-            type: email,
+            type: String,
             required: true,
+            unique:true
         },
         password: {
-            type: password,
+            type: String,
             required: true,
             select: false
         }
 
-    }, { timestamp: true });
+    }, { timestamps: true });
 
 
 
-   export const User = mongoose.model( users , userSchema);
 
 
-   User.pre
+    userSchema.pre("save", async function (next) {
+        if (!this.isModified("password")) return next();
+    
+        this.password = await bcrypt.hash(this.password, 10);
+        next();
+    });
+
+
+    userSchema.methods.comparePassword = async function (usrpassword){
+        return await bcrypt.compare(usrpassword ,this.password);
+    };
+
+
+
+
+
+export const User = mongoose.model("users", userSchema);
+
