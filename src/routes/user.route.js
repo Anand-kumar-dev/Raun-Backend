@@ -1,10 +1,12 @@
 import Router from "express"
-import { verifyToken } from "../middleware/auth.middleware"
+import { verifyToken } from "../middleware/auth.middleware.js"
+import { kitelogin } from "../controllers/zerodha.controller.js"
 
 
 const router = Router()
 
-router.get("/dashboard" , verifyToken ,(req,res)=>{
-    res.json({mes:"hi this is my portfolio"})
-})
+router.get("/kitelogin" , verifyToken ,kitelogin);
+
+
+
 export default router

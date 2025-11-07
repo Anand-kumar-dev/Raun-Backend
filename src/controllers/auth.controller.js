@@ -1,6 +1,5 @@
-import { User } from "../models/user.model";
-import jwt from "jsonwebtoken";
-import { generateToken } from "../utils/jwt.utils";
+import { User } from "../models/user.model.js";
+import { generateToken } from "../utils/jwt.utils.js";
 
 
 export const login = async (req, res) => {
@@ -19,11 +18,14 @@ export const login = async (req, res) => {
 
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            secure: false,
+            sameSite: "lax",
             maxAge: 15 * 60 * 1000,
         });
-        res.status(400).json({ mes: user });
+        req.user = user;
+        res.status(200).json({ mes: user ,
+            accesstoken: accessToken
+        });
 
     } catch (error) {
         console.log(error)
@@ -66,5 +68,5 @@ export const logout = async (req, res) => {
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
     });
-    res.status(400).json({mes:"logged out successfully"})
+    res.status(200).json({mes:"logged out successfully"})
 }
