@@ -1,9 +1,8 @@
 import { KiteConnect } from "kiteconnect";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import kite from "../services/kite.service.js";
-
 dotenv.config();
+import kite from "../services/kite.service.js";
 
 
 

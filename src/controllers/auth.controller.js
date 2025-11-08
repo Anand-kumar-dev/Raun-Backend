@@ -1,6 +1,7 @@
+import client from "../config/redis.config.js";
 import { User } from "../models/user.model.js";
 import { generateToken } from "../utils/jwt.utils.js";
-
+import jwt from "jsonwebtoken";
 
 export const login = async (req, res) => {
 
@@ -23,7 +24,8 @@ export const login = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000, // 24 hours
         });
         req.user = user;
-        res.status(200).json({ mes: user ,
+        res.status(200).json({
+            mes: user,
             accesstoken: accessToken
         });
 
@@ -63,10 +65,24 @@ export const signup = async (req, res) => {
 
 export const logout = async (req, res) => {
 
-    res.clearCookie("accessToken", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-    });
-    res.status(200).json({mes:"logged out successfully"})
+    try {
+        const accessToken = req.cookies.accessToken || req.header("Authorization")?.replace("Bearer ", "");
+        if (!accessToken) return res.status(200).json({ mes: "you are not authorize to see this webpage" })
+
+        const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
+        if (!decoded) return res.status(401).json({ mes: "Unauthorize" })
+        console.log(decoded.id)
+        await client.set(decoded.id, accessToken, { EX: 60 * 60 * 24 });
+
+        res.clearCookie("accessToken", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+        });
+
+        res.status(200).json({ mes: "logged out successfully" })
+    } catch (error) {
+        console.log("error while logging out" + error)
+        res.status(500).json({ mes: "error while logging out" + error })
+    }
 }
