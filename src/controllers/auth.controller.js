@@ -71,7 +71,6 @@ export const logout = async (req, res) => {
 
         const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
         if (!decoded) return res.status(401).json({ mes: "Unauthorize" })
-        console.log(decoded.id)
         await client.set(decoded.id, accessToken, { EX: 60 * 60 * 24 });
 
         res.clearCookie("accessToken", {

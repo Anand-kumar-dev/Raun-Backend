@@ -5,12 +5,12 @@ import { getfunds, getHoldings, getPositions, getProfile, kiteCallback, kitelogi
 
 const router = Router()
 
-router.get("/kitelogin" , verifyToken ,kitelogin);
+router.use(verifyToken);
+router.get("/kitelogin"  ,kitelogin);
 
 router.get("/callback",kiteCallback)
 
 
-router.use(verifyToken);
 
 router.get("/profile" ,getProfile);
 

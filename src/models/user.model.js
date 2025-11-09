@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
             select: false
+        },
+        zerodhaaccesstoken :{
+            type: String,
+            required: false,
+            select: false
         }
 
     }, { timestamps: true });

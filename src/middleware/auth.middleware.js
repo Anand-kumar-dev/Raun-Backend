@@ -12,7 +12,7 @@ export const verifyToken = async (req, res, next) => {
 
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
     const invalidatedtoken = await client.get(decoded.id);
-    console.log("invalidated token:", invalidatedtoken)
+    
     if (invalidatedtoken === accessToken) return res.status(401).json({ mes: "invalidated token Unauthorize" })
   req.user = decoded;
     next()
