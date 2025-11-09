@@ -10,10 +10,11 @@ export const login = async (req, res) => {
 
     try {
         const user = await User.findOne({ email }).select("+password")
-        if (!user) return res.json({ mes: "User not found" })
-
-        const isPasswordCorrect = user.comparePassword(password)
-        if (!isPasswordCorrect) res.json({ mes: "password is incorect" });
+        console.log(user);
+        if (!user) return res.status(400).json({ mes: "User not found" })
+            
+        const isPasswordCorrect = await user.comparePassword(password)
+        if (!isPasswordCorrect) return res.status(400).json({ mes: "password is incorect" });
 
         const accessToken = generateToken(user.id);
 
