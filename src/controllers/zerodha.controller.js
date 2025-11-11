@@ -8,7 +8,7 @@ import { User } from "../models/user.model.js";
 
 
 export const kitelogin = async (req, res) => {
-
+  console.log("Kite login initiated for user:", req.user);
   const stateToken = jwt.sign({ Id: req.user }, process.env.JWT_SECRET, {
     expiresIn: "5m"
   });
