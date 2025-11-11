@@ -2,6 +2,9 @@
 
 This is the Node.js/Express backend that powers the Raun application. It's built to securely manage user authentication and act as a reliable gateway for fetching real-time trading data using the Zerodha Kite Connect API.
 
+<img width="1005" height="415" alt="image" src="https://github.com/user-attachments/assets/b8492653-8612-4097-ac79-0609028c6f4c" />
+
+
 My goal here was to create a robust, modular, and secure API layer so the frontend can focus purely on presentation.
 
 
@@ -37,7 +40,6 @@ You'll need Node.js and a MongoDB instance (local or hosted, like MongoDB Atlas)
 
 4.  **Start the server:**
     ```bash
-    # Assuming you have nodemon for development, or just use node
     node server.js
     ```
     The server will start on the port specified in your `.env` file (e.g., `http://localhost:3000`).
@@ -46,9 +48,10 @@ You'll need Node.js and a MongoDB instance (local or hosted, like MongoDB Atlas)
 
 * **Runtime:** Node.js
 * **Framework:** Express.js
-* **Database:** MongoDB via Mongoose ORM
-* **Authentication:** JWT with `cookie-parser` for secure, HTTP-only cookie management. Passwords are secured using `bcrypt`.
-* **Trading API:** Integrated using the official `kiteconnect` library.
+* **Database:** MongoDB via Mongoose 
+* **Authentication:** jwt token with bcrypt.
+* **Trading API:** zerodha kite.
+* **Redis:** for invalidating access token .
 
 ##  Key Endpoints
 
